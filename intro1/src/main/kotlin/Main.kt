@@ -7,3 +7,7 @@ fun main(args: Array<String>) {
     //[LM5-18] SCIENZE
     //[LM5] SCIENZE
 }
+
+fun extractCategory(input: String): String {
+    return ""
+}
