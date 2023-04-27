@@ -9,5 +9,24 @@ fun main(args: Array<String>) {
 }
 
 fun extractCategory(input: String): String {
-    return ""
+    val result = extractFromSquareBrackets(input)
+    return if (result != input) {
+        result
+    } else {
+        extractFromDashes(result)
+    }
+
+}
+
+fun extractFromSquareBrackets(input: String): String {
+    return input.split("]")[0].replace(oldChar = '[', newChar = ' ').trim()
+}
+
+fun extractFromDashes(input: String): String {
+    val lastDashIndex = input.indexOfLast { it == '-' }
+    return if (lastDashIndex == -1) {
+        input
+    } else {
+        input.substring(startIndex = 0, endIndex = lastDashIndex)
+    }
 }
