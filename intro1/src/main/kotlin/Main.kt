@@ -9,24 +9,41 @@ fun main(args: Array<String>) {
 }
 
 fun extractCategory(input: String): String {
-    val result = extractFromSquareBrackets(input)
+    val result = extractFromSquareBrackets(input, 0)
     return if (result != input) {
         result
     } else {
-        extractFromDashes(result)
+        extractFromDashes(result, first = true)
+    }
+}
+
+fun extractCourseName(input: String): String {
+    val result = extractFromSquareBrackets(input, 1)
+    return if (result != input) {
+        result
+    } else {
+        extractFromDashes(result, first = false)
+    }
+}
+
+fun extractFromSquareBrackets(input: String, groupIndex: Int): String {
+    val trimmedInput = input.replace(oldChar = '[', newChar = ' ').trim()
+    if (!trimmedInput.contains("]")) {
+        return trimmedInput
+    }
+    return trimmedInput.split("]")[groupIndex].replace("- ", " ").trim()
+}
+
+fun extractFromDashes(input: String, first: Boolean): String {
+    val lastDashIndex = input.indexOfLast { it == '-' }
+
+    if (lastDashIndex == -1) {
+        return input
     }
 
-}
-
-fun extractFromSquareBrackets(input: String): String {
-    return input.split("]")[0].replace(oldChar = '[', newChar = ' ').trim()
-}
-
-fun extractFromDashes(input: String): String {
-    val lastDashIndex = input.indexOfLast { it == '-' }
-    return if (lastDashIndex == -1) {
-        input
-    } else {
+    return if (first) {
         input.substring(startIndex = 0, endIndex = lastDashIndex)
+    } else {
+        input.substring(startIndex = lastDashIndex + 1, endIndex = input.length)
     }
 }
